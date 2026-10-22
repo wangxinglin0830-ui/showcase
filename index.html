@@ -353,6 +353,13 @@ section>*{position:relative;z-index:2}
 .fx-floater.b{animation-duration:9.5s;animation-delay:-3s}
 .fx-floater.c{animation-duration:8s;animation-delay:-1.5s}
 @keyframes fxPhotoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@supports (animation-timeline: view()){
+  section{animation:fxPageFlow linear both;animation-timeline:view()}
+  @keyframes fxPageFlow{0%{transform:translateY(28px)}50%{transform:translateY(0)}100%{transform:translateY(-28px)}}
+}
+.fx-wipe{position:fixed;inset:0;z-index:9996;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,var(--wc,#315dff) 50%,transparent);transform:translateX(-100%)}
+.fx-wipe.fx-go{animation:fxWipe .6s cubic-bezier(.7,0,.2,1)}
+@keyframes fxWipe{0%{transform:translateX(-100%);opacity:0}30%{opacity:.5}100%{transform:translateX(100%);opacity:0}}
 </style>
 </head>
 <body>
@@ -581,6 +588,17 @@ document.querySelectorAll('.circle-deco').forEach(el=>{
     const fl=document.createElement('div');fl.className='fx-floater'+['',' b',' c'][i%3];
     p.insertBefore(fl,img);fl.appendChild(img);
   });
+})();
+</script>
+<script>
+(function(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const $$=(s,c=document)=>[...c.querySelectorAll(s)];
+  const wipe=document.createElement('div');wipe.className='fx-wipe';document.body.appendChild(wipe);
+  const colors=['#315dff','#7a9aff','#2d7864','#b4a0dc','#6450a0','#aebaff'];
+  const secs=$$('section');let last=-1;
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.5){const i=secs.indexOf(e.target);if(i!==last&&last>=0){wipe.style.setProperty('--wc',colors[i]||'#315dff');wipe.classList.remove('fx-go');void wipe.offsetWidth;wipe.classList.add('fx-go');}last=i;}}),{threshold:[.5,.6]});
+  secs.forEach(s=>obs.observe(s));
 })();
 </script>
 </body>
