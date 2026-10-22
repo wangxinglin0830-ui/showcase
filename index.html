@@ -325,6 +325,30 @@ h2{font-size:clamp(2.8rem,12vw,5rem)}
 .fx-particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 section>*{position:relative;z-index:2}
 #ending .fx-confetti{z-index:1}
+
+/* ===== FLOATING PIECES ===== */
+.fx-float-word{position:fixed;pointer-events:none;z-index:3;mix-blend-mode:difference;will-change:transform;font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(40px,6.5vw,96px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.55);white-space:nowrap}
+.fx-float-word span{display:inline-block;animation:fxFloatA 8s ease-in-out infinite}
+.fx-float-word.b span{animation:fxFloatB 11s ease-in-out infinite}
+.fx-float-word.c span{animation:fxFloatC 9.5s ease-in-out infinite}
+@keyframes fxFloatA{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-26px) rotate(2deg)}}
+@keyframes fxFloatB{0%,100%{transform:translateY(0) translateX(0) rotate(1deg)}50%{transform:translateY(22px) translateX(-16px) rotate(-3deg)}}
+@keyframes fxFloatC{0%,100%{transform:translateY(0) rotate(0)}33%{transform:translateY(-18px) rotate(2deg)}66%{transform:translateY(14px) rotate(-2deg)}}
+.fx-frame{position:absolute;width:clamp(86px,10vw,140px);z-index:1;animation:fxFrameFloat 7s ease-in-out infinite;will-change:transform}
+.fx-frame.b{animation-duration:9s;animation-delay:-2s}
+.fx-frame-par{will-change:transform}
+.fx-frame .fx-frame-art{width:100%;aspect-ratio:3/4;border:1px solid rgba(127,127,127,.3);border-radius:3px;overflow:hidden;box-shadow:0 18px 50px rgba(20,30,60,.18);transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s}
+.fx-frame:hover .fx-frame-art{transform:scale(1.07) rotate(-2deg);box-shadow:0 30px 70px rgba(20,30,60,.3)}
+.fx-frame .fx-frame-label{margin-top:8px;display:flex;justify-content:space-between;gap:6px;font:8px 'JetBrains Mono',monospace;letter-spacing:.08em;opacity:.72;text-transform:uppercase;color:#25304c}
+#music .fx-frame-label,#art .fx-frame-label{color:#e8ecf4}
+@keyframes fxFrameFloat{0%,100%{transform:translateY(0) rotate(var(--rot,-2deg))}50%{transform:translateY(-16px) rotate(calc(var(--rot,-2deg) + 3deg))}}
+.fx-glyph{position:absolute;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(90px,15vw,220px);color:currentColor;opacity:.13;pointer-events:none;z-index:0;line-height:1;animation:fxGlyphFloat 10s ease-in-out infinite;will-change:transform}
+#music .fx-glyph,#art .fx-glyph{color:#e8ecf4}
+@keyframes fxGlyphFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-24px) rotate(8deg)}}
+.fx-bignum{position:absolute;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(180px,36vw,500px);color:currentColor;opacity:.045;pointer-events:none;z-index:0;line-height:.8;right:-3vw;top:50%;transform:translateY(-50%);animation:fxBigFloat 13s ease-in-out infinite;will-change:transform}
+#music .fx-bignum,#art .fx-bignum{color:#e8ecf4}
+@keyframes fxBigFloat{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-50%) translateX(22px)}}
+@media(max-width:760px){.fx-frame{display:none}.fx-bignum{font-size:clamp(140px,52vw,300px);opacity:.04}.fx-glyph{font-size:clamp(70px,22vw,140px)}.fx-float-word{font-size:clamp(28px,11vw,60px)}}
 </style>
 </head>
 <body>
@@ -553,16 +577,46 @@ document.querySelectorAll('.circle-deco').forEach(el=>{
     for(let i=0;i<60;i++){const c=document.createElement('i');c.style.left=Math.random()*100+'%';c.style.background=cols[i%cols.length];c.style.animationDuration=(2.5+Math.random()*3)+'s';c.style.animationDelay=(Math.random()*3)+'s';const s=(5+Math.random()*7)+'px';c.style.width=s;c.style.height=s;cf.appendChild(c);}
     const mq=document.createElement('div');mq.className='fx-emarq';const tr=document.createElement('div');tr.className='fx-mtrack';const parts=['BORN TO BE CURIOUS','STAY CURIOUS','KEEP EXPLORING','IMAGINE & BUILD','NEVER STOP'];const block=parts.map(p=>'<span>'+p+'</span><i>·</i>').join('');tr.innerHTML=block+block;mq.appendChild(tr);en.appendChild(mq);
   }
-  if(!reduce){
-    const cv=document.createElement('canvas');cv.className='fx-particles';document.body.appendChild(cv);
-    const ctx=cv.getContext('2d');let W=0,H=0,PP=[];
-    const pals={home:['#315dff','#a0b8ff','#f34b53','#ffffff'],music:['#7a9aff','#a0b8ff','#ffffff','#d4b896'],games:['#2d7864','#7fd0b0','#ffffff','#e07060'],art:['#b4a0dc','#d4b896','#ffffff','#9a86c4'],ai:['#6450a0','#a090d0','#ffffff','#e07060'],ending:['#aebaff','#ffffff','#7a9aff','#d4b896']};
-    let cur=pals.home,mx=-9999,my=-9999;
-    function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight;const n=Math.min(85,Math.floor(W*H/18000));PP=[];for(let i=0;i<n;i++)PP.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.4+.6,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,c:Math.floor(Math.random()*4),a:Math.random()*6.28,va:(Math.random()-.5)*.02});}
-    rsz();addEventListener('resize',rsz);
-    addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-    const pObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.5){cur=pals[e.target.id]||pals.home;}}}),{threshold:[.5,.6]});$$('section').forEach(s=>pObs.observe(s));
-    (function draw(){ctx.clearRect(0,0,W,H);for(const p of PP){p.vx*=.985;p.vy*=.985;const dxm=p.x-mx,dym=p.y-my,dm2=dxm*dxm+dym*dym;if(dm2<9000&&dm2>4){const inv=1/dm2;p.vx+=dxm*inv*40;p.vy+=dym*inv*40;}const sp=Math.hypot(p.vx,p.vy);if(sp>1.6){p.vx=p.vx/sp*1.6;p.vy=p.vy/sp*1.6;}p.x+=p.vx;p.y+=p.vy;p.a+=p.va;if(p.x<-12)p.x=W+12;if(p.x>W+12)p.x=-12;if(p.y<-12)p.y=H+12;if(p.y>H+12)p.y=-12;ctx.globalAlpha=.45+Math.sin(p.a)*.3;ctx.fillStyle=cur[p.c];ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();}for(let i=0;i<PP.length;i++)for(let j=i+1;j<PP.length;j++){const a=PP[i],b=PP[j];const dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;if(d2<13000){ctx.globalAlpha=(1-Math.sqrt(d2)/114)*.16;ctx.strokeStyle=cur[0];ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}ctx.globalAlpha=1;requestAnimationFrame(draw);})();
+})();
+</script>
+<script>
+(function(){
+  const $$=(s,c=document)=>[...c.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const secs=$$('section');
+  const words=[{t:'CURIOSITY',cls:'',left:'6vw',top:'24vh',depth:18},{t:'IMAGINE',cls:'b',left:'72vw',top:'62vh',depth:-22},{t:'CREATE',cls:'c',left:'40vw',top:'82vh',depth:14}];
+  const wordEls=words.map(w=>{const el=document.createElement('div');el.className='fx-float-word '+w.cls;el.style.left=w.left;el.style.top=w.top;el.dataset.depth=w.depth;el.innerHTML='<span>'+w.t+'</span>';document.body.appendChild(el);return el;});
+  const palette={home:['#315dff','#a0b8ff'],music:['#7a9aff','#d4b896'],games:['#2d7864','#e07060'],art:['#b4a0dc','#d4b896'],ai:['#6450a0','#e07060'],ending:['#aebaff','#ffffff']};
+  const glyphs=['\u2726','\u275d','\u00a7','\u273a','\u27e1','\u2727'];
+  const artKinds=['mesh','circles','stripes','dots','rings'];
+  function art(kind,c1,c2,uid){
+    if(kind==='mesh')return '<div style="width:100%;height:100%;background:conic-gradient(from 40deg,'+c1+','+c2+','+c1+')"></div>';
+    if(kind==='stripes')return '<div style="width:100%;height:100%;background:repeating-linear-gradient(45deg,'+c1+' 0 6px,transparent 6px 14px),linear-gradient('+c2+','+c1+')"></div>';
+    if(kind==='dots')return '<svg viewBox="0 0 100 130" width="100%" height="100%"><defs><pattern id="p'+uid+'" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2.4" fill="'+c1+'"/></pattern></defs><rect width="100" height="130" fill="'+c2+'"/><rect width="100" height="130" fill="url(#p'+uid+')"/></svg>';
+    if(kind==='rings')return '<svg viewBox="0 0 100 130" width="100%" height="100%"><rect width="100" height="130" fill="'+c2+'"/><g fill="none" stroke="'+c1+'" stroke-width="1.2"><circle cx="50" cy="65" r="14"/><circle cx="50" cy="65" r="26"/><circle cx="50" cy="65" r="38"/><circle cx="50" cy="65" r="50"/></g></svg>';
+    return '<svg viewBox="0 0 100 130" width="100%" height="100%"><rect width="100" height="130" fill="'+c2+'"/><g fill="none" stroke="'+c1+'" stroke-width="1"><circle cx="30" cy="40" r="22"/><circle cx="72" cy="80" r="18"/><circle cx="60" cy="30" r="10"/><line x1="0" y1="65" x2="100" y2="65"/><line x1="50" y1="0" x2="50" y2="130"/></g></svg>';
+  }
+  const frameEls=[];
+  secs.forEach((s,idx)=>{
+    const id=s.id,pal=palette[id]||['#315dff','#a0b8ff'];
+    const bn=document.createElement('div');bn.className='fx-bignum';bn.textContent=String(idx+1).padStart(2,'0');s.appendChild(bn);
+    const gl=document.createElement('div');gl.className='fx-glyph';gl.textContent=glyphs[idx%glyphs.length];gl.style.left=(idx%2?'78vw':'4vw');gl.style.top=(idx%2?'12%':'68%');s.appendChild(gl);
+    if(id!=='ending'){
+      const positions=[{left:'2.5vw',top:'20%',rot:-4},{right:'3.5vw',bottom:'22%',rot:3}];
+      positions.forEach((pos,fi)=>{
+        const f=document.createElement('div');f.className='fx-frame'+(fi?' b':'');f.style.setProperty('--rot',pos.rot+'deg');
+        if(pos.left)f.style.left=pos.left;if(pos.top)f.style.top=pos.top;if(pos.right)f.style.right=pos.right;if(pos.bottom)f.style.bottom=pos.bottom;
+        const par=document.createElement('div');par.className='fx-frame-par';par.dataset.depth=fi?-16:12;
+        const kind=artKinds[(idx*2+fi)%artKinds.length];
+        par.innerHTML='<div class="fx-frame-art">'+art(kind,pal[0],pal[1],idx+'-'+fi)+'</div><div class="fx-frame-label"><span>'+kind.toUpperCase()+'</span><span>0'+(idx+1)+'\u00b70'+(fi+1)+'</span></div>';
+        f.appendChild(par);s.appendChild(f);frameEls.push(par);
+      });
+    }
+  });
+  if(fine&&!reduce){
+    let mx=0,my=0,tx=0,ty=0;
+    addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;});
+    (function loop(){tx+=(mx-tx)*.06;ty+=(my-ty)*.06;wordEls.forEach(el=>{const d=parseFloat(el.dataset.depth);el.style.transform='translate('+(tx*d)+'px,'+(ty*d)+'px)';});frameEls.forEach(el=>{const d=parseFloat(el.dataset.depth);el.style.transform='translate('+(tx*d)+'px,'+(ty*d)+'px)';});requestAnimationFrame(loop);})();
   }
 })();
 </script>
