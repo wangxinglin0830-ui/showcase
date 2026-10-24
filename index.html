@@ -6,100 +6,146 @@
 <meta name="theme-color" content="#eef1ff"/>
 <title>My World — A Scroll Experience</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@500;700;800&family=JetBrains+Mono:wght@400;500&family=Big+Shoulders+Display:wght@600;800;900&family=Unbounded:wght@600;800&family=Instrument+Serif:ital@0;1&display=swap');
-:root{--blue:#315dff;--red:#f34b53;--mono:'JetBrains Mono',monospace;--display:'Space Grotesk',sans-serif;--display2:'Syne',sans-serif;--display3:'Big Shoulders Display',sans-serif;--display4:'Unbounded',sans-serif;--serif:'Instrument Serif',serif;--body:'Manrope',sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:#0b0e1a;color:#e8ecf4;font-family:var(--body);overflow-x:hidden}
-::selection{background:var(--blue);color:#fff}
-img{display:block;width:100%;height:100%;object-fit:cover}
-section{position:relative;width:100%}
-.eyebrow{font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;opacity:.7}
-h1,h2{font-family:var(--display4);font-weight:800;letter-spacing:-.04em;line-height:.92}
-h1{font-size:clamp(3.5rem,9vw,8rem)}
-h2{font-size:clamp(2.6rem,6vw,5.5rem)}
-em{font-style:normal;color:var(--blue)}
-p.lead{font-size:clamp(15px,1.4vw,18px);line-height:1.8;color:#b0b8d0;max-width:560px;margin-top:18px}
-.prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--blue),var(--red));z-index:50}
-.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;display:grid;gap:16px}
-.dots a{width:8px;height:8px;border-radius:50%;background:#ffffff33;transition:.3s}
-.dots a.on{background:var(--blue);transform:scale(1.4);box-shadow:0 0 12px var(--blue)}
-.tag{font:9px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#7a9aff}
-
-/* ===== 1. HERO PARALLAX ===== */
+/* ===== ENHANCED PARALLAX ===== */
 .hero{height:100vh;overflow:hidden;background:radial-gradient(120% 80% at 70% 30%,#1a2a5e,#0b0e1a 60%)}
-.hero .layer{position:absolute;inset:0;will-change:transform}
+.hero .layer{position:absolute;inset:0;will-change:transform;transition:transform .1s linear}
 .hero .bg{z-index:0}
-.hero .bg .aurora{position:absolute;width:80vw;height:80vw;left:-10vw;top:-20vh;background:conic-gradient(from 0deg,#315dff,#7a9aff,#f34b53,#315dff);border-radius:50%;filter:blur(90px);opacity:.5;animation:spin 26s linear infinite}
+.hero .bg .aurora{position:absolute;width:80vw;height:80vw;left:-10vw;top:-20vh;background:conic-gradient(from 0deg,#315dff,#7a9aff,#f34b53,#315dff);border-radius:50%;filter:blur(90px);opacity:.22;animation:spin 26s linear infinite}
+.hero .bg .aurora2{position:absolute;width:60vw;height:60vw;right:-15vw;bottom:-10vh;background:conic-gradient(from 180deg,#f34b53,#315dff,#7a9aff,#f34b53);border-radius:50%;filter:blur(120px);opacity:.14;animation:spin 35s linear infinite reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
 .hero .mid{z-index:1;display:flex;align-items:center;justify-content:center}
-.hero .mid .ghost{font-family:var(--display4);font-weight:800;font-size:clamp(80px,20vw,280px);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px #ffffff14;white-space:nowrap}
+.hero .mid .ghost{font-family:var(--display4);font-weight:800;font-size:clamp(60px,13vw,170px);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px #ffffff0e;white-space:nowrap;animation:ghostPulse 4s ease-in-out infinite}
+@keyframes ghostPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.65;transform:scale(1.008)}}
 .hero .fore{z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:5vw;align-items:center;padding:0 8vw;height:100%}
-.hero .copy h1{color:#fff}
-.hero .copy .lead{color:#c4ccdf}
-.hero .photo{aspect-ratio:3/4;border:1px solid #ffffff1a;border-radius:4px;overflow:hidden;box-shadow:0 30px 80px #000a}
-.hero .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font:10px var(--mono);letter-spacing:.2em;color:#7a9aff;z-index:3}
+.hero .copy h1{color:#fff;animation:riseIn 1s ease-out both}
+.hero .copy .lead{color:#c4ccdf;animation:riseIn 1s .2s ease-out both}
+@keyframes riseIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero .photo{aspect-ratio:3/4;border:1px solid #ffffff1a;border-radius:4px;overflow:hidden;box-shadow:0 30px 80px #000a,0 0 60px #315dff15;animation:photoFloat 6s ease-in-out infinite}
+@keyframes photoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero .photo::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#315dff20,transparent 60%);z-index:1;pointer-events:none}
+.hero .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font:10px var(--mono);letter-spacing:.2em;color:#7a9aff;z-index:3;animation:hintBounce 2s ease-in-out infinite}
+@keyframes hintBounce{0%,100%{transform:translateX(-50%) translateY(0);opacity:1}50%{transform:translateX(-50%) translateY(8px);opacity:.5}}
+/* Floating particles */
+.hero .particles{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hero .particle{position:absolute;width:3px;height:3px;background:#7a9aff;border-radius:50%;opacity:0;animation:particleFloat linear infinite}
+@keyframes particleFloat{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.8}90%{opacity:.8}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
 
-/* ===== 2. HORIZONTAL SCROLL ===== */
+/* ===== ENHANCED HORIZONTAL ===== */
 .hsec{height:260vh;background:#0f1628}
 .hsec .sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
-.hsec .track{display:flex;gap:6vw;padding:0 8vw;will-change:transform}
-.hsec .panel{flex:0 0 auto;width:80vw;max-width:900px;display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center}
-.hsec .panel .ph{aspect-ratio:4/5;border:1px solid #7a9aff33;border-radius:4px;overflow:hidden;box-shadow:0 24px 60px #0008}
+.hsec .track{display:flex;gap:6vw;padding:0 8vw;will-change:transform;transition:transform .05s linear}
+.hsec .panel{flex:0 0 auto;width:80vw;max-width:900px;display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center;opacity:0;transform:translateX(40px);transition:opacity .6s ease,transform .6s ease}
+.hsec .panel.visible{opacity:1;transform:translateX(0)}
+.hsec .panel .ph{aspect-ratio:4/5;border:1px solid #7a9aff33;border-radius:4px;overflow:hidden;box-shadow:0 24px 60px #0008;transition:transform .4s ease,box-shadow .4s ease}
+.hsec .panel .ph:hover{transform:scale(1.03);box-shadow:0 30px 80px #000c,0 0 40px #7a9aff20}
 .hsec .panel h2{color:#e8ecf4}
 .hsec .panel h2 em{color:#7a9aff}
 .hsec .panel .lead{color:#b0b8d0}
 .hsec .panel.text-only{width:60vw;max-width:680px;display:block}
 .hsec .hlabel{position:absolute;top:6vh;left:8vw;font:11px var(--mono);letter-spacing:.2em;color:#7a9aff;z-index:2}
-.hsec .hbar{position:absolute;bottom:8vh;left:8vw;right:8vw;height:2px;background:#2a3555;z-index:2}
-.hsec .hbar i{position:absolute;left:0;top:0;height:100%;background:#7a9aff;width:0}
+.hsec .hbar{position:absolute;bottom:8vh;left:8vw;right:8vw;height:2px;background:#2a3555;z-index:2;border-radius:1px;overflow:hidden}
+.hsec .hbar i{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,#7a9aff,#315dff);width:0;transition:width .1s linear;border-radius:1px}
+/* Panel number badges */
+.hsec .panel-num{font:10px var(--mono);letter-spacing:.15em;color:#7a9aff55;margin-bottom:12px}
 
-/* ===== 3. SCROLL TRIGGER ===== */
+/* ===== ENHANCED SCROLL TRIGGER ===== */
 .tsec{height:200vh;background:#e8f0ee;color:#1a3a32}
 .tsec .sticky{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center;padding:0 8vw;overflow:hidden}
 .tsec .scene{position:relative;aspect-ratio:1;max-width:520px;justify-self:center;will-change:transform}
-.tsec .scene .ph{position:absolute;inset:0;border-radius:8px;overflow:hidden;border:1px solid #2d786433;box-shadow:0 30px 80px #1a3a3222}
-.tsec .scene .ph img{transition:opacity .4s}
+.tsec .scene .ph{position:absolute;inset:0;border-radius:8px;overflow:hidden;border:1px solid #2d786433;box-shadow:0 30px 80px #1a3a3222;transition:box-shadow .4s ease}
+.tsec .scene .ph img{transition:opacity .6s ease,transform .6s ease}
 .tsec .copy h2{color:#1a3a32}
 .tsec .copy h2 em{color:#2d7864}
 .tsec .copy .lead{color:#4a6b62}
-.tsec .copy .scenes{margin-top:26px}
-.tsec .copy .scene-txt{position:absolute;opacity:0;transition:opacity .5s}
-.tsec .copy .scene-txt.on{opacity:1}
+.tsec .copy .scenes{margin-top:26px;position:relative;min-height:120px}
+.tsec .copy .scene-txt{position:absolute;opacity:0;transform:translateY(15px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.tsec .copy .scene-txt.on{opacity:1;transform:translateY(0)}
 .tsec .copy .scene-txt p{font-size:clamp(15px,1.4vw,18px);line-height:1.8;color:#4a6b62;max-width:480px}
-.tsec .ring{position:absolute;border:1.5px solid #2d786455;border-radius:50%;pointer-events:none}
+.tsec .ring{position:absolute;border:1.5px solid #2d786455;border-radius:50%;pointer-events:none;transition:transform .1s linear,opacity .3s ease}
+.tsec .ring2{position:absolute;border:1px dashed #2d786433;border-radius:50%;pointer-events:none}
+/* Scene indicator dots */
+.tsec .scene-dots{display:flex;gap:8px;margin-top:20px}
+.tsec .scene-dots span{width:8px;height:8px;border-radius:50%;background:#2d786433;transition:all .4s ease}
+.tsec .scene-dots span.on{background:#2d7864;transform:scale(1.3)}
 
-/* ===== 4. LINKED ROTATION ===== */
+/* ===== ENHANCED LINKED ROTATION ===== */
 .lsec{height:220vh;background:#1e1a2e;color:#e8e0f0}
 .lsec .sticky{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:.9fr 1.1fr;gap:5vw;align-items:center;padding:0 8vw;overflow:hidden}
 .lsec .rotor{position:relative;aspect-ratio:1;max-width:480px;justify-self:center;will-change:transform}
-.lsec .rotor .core{position:absolute;inset:0;border-radius:50%;overflow:hidden;border:1px solid #b4a0dc44;box-shadow:0 30px 80px #0008}
-.lsec .rotor .orbit{position:absolute;inset:-12%;border:1px dashed #d4b89666;border-radius:50%}
+.lsec .rotor .core{position:absolute;inset:0;border-radius:50%;overflow:hidden;border:1px solid #b4a0dc44;box-shadow:0 30px 80px #0008,0 0 60px #d4b89615;transition:box-shadow .4s ease}
+.lsec .rotor .orbit{position:absolute;inset:-12%;border:1px dashed #d4b89666;border-radius:50%;animation:orbitSpin 20s linear infinite}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+.lsec .rotor .orbit2{position:absolute;inset:-22%;border:1px dotted #b4a0dc33;border-radius:50%;animation:orbitSpin 30s linear infinite reverse}
 .lsec .rotor .dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#d4b896;box-shadow:0 0 18px #d4b896;top:50%;left:50%;transform:translate(-50%,-50%) translateX(0)}
+.lsec .rotor .dot2{position:absolute;width:8px;height:8px;border-radius:50%;background:#b4a0dc;box-shadow:0 0 12px #b4a0dc;top:50%;left:50%;transform:translate(-50%,-50%) translateX(0)}
 .lsec .copy h2{color:#e8e0f0}
 .lsec .copy h2 em{color:#d4b896}
 .lsec .copy .lead{color:#a89bb8}
 .lsec .gauge{margin-top:30px;font:10px var(--mono);letter-spacing:.1em;color:#b4a0dc}
 .lsec .gauge b{color:#d4b896}
+/* Rotation progress ring */
+.lsec .rotor .progress-ring{position:absolute;inset:-5%;border-radius:50%;border:2px solid transparent;border-top-color:#d4b896;pointer-events:none;transition:transform .1s linear}
 
-/* ===== 5. 3D ROAM ===== */
+/* ===== ENHANCED 3D ROAM ===== */
 .rsec{height:280vh;background:#0b0e1a}
 .rsec .sticky{position:sticky;top:0;height:100vh;perspective:1200px;perspective-origin:50% 50%;overflow:hidden}
 .rsec .tunnel{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
-.rsec .slab{position:absolute;left:50%;top:50%;width:min(70vw,680px);aspect-ratio:16/10;transform:translate(-50%,-50%);border:1px solid #6450a033;border-radius:8px;overflow:hidden;box-shadow:0 30px 80px #000a;backface-visibility:hidden}
+.rsec .slab{position:absolute;left:50%;top:50%;width:min(70vw,680px);aspect-ratio:16/10;transform:translate(-50%,-50%);border:1px solid #6450a033;border-radius:8px;overflow:hidden;box-shadow:0 30px 80px #000a;backface-visibility:hidden;transition:box-shadow .4s ease}
+.rsec .slab:hover{box-shadow:0 30px 80px #000a,0 0 40px #6450a030}
 .rsec .slab .cap{position:absolute;left:14px;bottom:12px;font:10px var(--mono);letter-spacing:.14em;color:#c8c0e0;text-transform:uppercase;text-shadow:0 2px 8px #000}
 .rsec .roam-hud{position:absolute;left:8vw;top:8vh;z-index:3}
 .rsec .roam-hud h2{color:#e8ecf4}
 .rsec .roam-hud h2 em{color:#a0b8ff}
 .rsec .roam-hud .lead{color:#b0b8d0}
 .rsec .depth{position:absolute;right:8vw;bottom:10vh;font:11px var(--mono);letter-spacing:.14em;color:#6450a0;z-index:3}
+/* Fog overlay */
+.rsec .fog{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,#0b0e1a 80%);pointer-events:none;z-index:2}
+/* Vignette */
+.rsec .vignette{position:absolute;inset:0;box-shadow:inset 0 0 150px 60px #0b0e1a;pointer-events:none;z-index:3}
 
-/* ===== 6. ENDING ===== */
-.end{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(80% 60% at 50% 50%,#162048,#0b0e1a 70%);color:#fff}
-.end h2{font-size:clamp(3rem,10vw,7rem);color:#fff}
+/* ===== ENHANCED ENDING ===== */
+.end{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(80% 60% at 50% 50%,#162048,#0b0e1a 70%);color:#fff;position:relative;overflow:hidden}
+.end h2{font-size:clamp(3rem,10vw,7rem);color:#fff;animation:endRise 1.2s ease-out both}
 .end h2 em{color:#aebaff}
-.end .lead{color:#c4ccdf;margin:24px auto 0}
-.end .tag{margin-top:40px;color:#7a9aff}
+.end .lead{color:#c4ccdf;margin:24px auto 0;animation:endRise 1.2s .3s ease-out both;max-width:600px}
+.end .tag{margin-top:40px;color:#7a9aff;animation:endRise 1.2s .6s ease-out both}
+@keyframes endRise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+/* Ending particles */
+.end .end-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.end .end-particle{position:absolute;width:2px;height:2px;background:#aebaff;border-radius:50%;opacity:0;animation:endParticleFloat linear infinite}
+@keyframes endParticleFloat{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-10vh)}}
+
+/* ===== GLOBAL ENHANCEMENTS ===== */
+/* Smooth scroll behavior */
+html{scroll-behavior:smooth}
+/* Custom scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#0b0e1a}
+::-webkit-scrollbar-thumb{background:#315dff;border-radius:2px}
+/* Selection */
+::selection{background:var(--blue);color:#fff}
+/* Nav dots enhanced */
+.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;display:grid;gap:16px}
+.dots a{width:8px;height:8px;border-radius:50%;background:#ffffff33;transition:.3s;position:relative}
+.dots a.on{background:var(--blue);transform:scale(1.4);box-shadow:0 0 12px var(--blue)}
+.dots a::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid transparent;transition:border-color .3s}
+.dots a.on::after{border-color:#315dff44}
+/* Progress bar enhanced */
+.prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--blue),var(--red));z-index:50;box-shadow:0 0 10px #315dff66;transition:width .1s linear}
+/* Tag style */
+.tag{font:9px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#7a9aff}
+/* Eyebrow */
+.eyebrow{font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+/* Headings */
+h1,h2{font-family:var(--display4);font-weight:800;letter-spacing:-.04em;line-height:.92}
+h1{font-size:clamp(3.5rem,9vw,8rem)}
+h2{font-size:clamp(2.6rem,6vw,5.5rem)}
+em{font-style:normal;color:var(--blue)}
+p.lead{font-size:clamp(15px,1.4vw,18px);line-height:1.8;color:#b0b8d0;max-width:560px;margin-top:18px}
+img{display:block;width:100%;height:100%;object-fit:cover}
+section{position:relative;width:100%}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0b0e1a;color:#e8ecf4;font-family:var(--body);overflow-x:hidden}
 
 @media(max-width:760px){
 .hero .fore{grid-template-columns:1fr;padding:0 6vw;gap:24px}
@@ -111,7 +157,7 @@ p.lead{font-size:clamp(15px,1.4vw,18px);line-height:1.8;color:#b0b8d0;max-width:
 .rsec .roam-hud{left:6vw;top:6vh}
 .rsec .depth{right:6vw;bottom:6vh}
 }
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -241,67 +287,226 @@ p.lead{font-size:clamp(15px,1.4vw,18px);line-height:1.8;color:#b0b8d0;max-width:
 
   function secTop(i){return secs[i].offsetTop;}
   function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-  // progress of section i: 0 when entering bottom, 1 when leaving top
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function easeOutCubic(t){return 1-Math.pow(1-t,3);}
+  function easeInOutQuad(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
   function sp(i){const r=secs[i].getBoundingClientRect();return clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);}
 
   // ===== HERO PARALLAX =====
   const hLayers=$$('.hero .layer');
   // ===== HORIZONTAL =====
-  const track=$('#htrack'),hbar=$('#hbar');
+  const track=$('#htrack'),hbar=$('#hbar'),hPanels=$$('.hsec .panel');
   // ===== TRIGGER =====
-  const timg=$('#timg'),tring=$('#tring'),sceneTxts=$$('#scenes .scene-txt');
+  const timg=$('#timg'),tring=$('#tring'),tring2=$('#tring2'),sceneTxts=$$('#scenes .scene-txt'),sceneDots=$$('.scene-dots span');
   // ===== ROTOR =====
-  const rotor=$('#rotor'),rdot=$('#rdot'),gdeg=$('#gdeg');
+  const rotor=$('#rotor'),rdot=$('#rdot'),rdot2=$('#rdot2'),gdeg=$('#gdeg'),progressRing=$$('.progress-ring');
   // ===== TUNNEL =====
   const tunnel=$('#tunnel'),depth=$('#depth'),slabs=$$('.rsec .slab');
 
-  let ticking=false;
+  let ticking=false, lastScroll=0;
   function update(){
     ticking=false;
+    const scrollY=window.scrollY;
     const sf=clamp(scrollY/(document.documentElement.scrollHeight-innerHeight),0,1);
     prog.style.width=(sf*100)+'%';
     // dots
     let cur=0;for(let i=0;i<secs.length;i++){if(secs[i].getBoundingClientRect().top<innerHeight*0.5)cur=i;}
     dots.forEach((d,i)=>d.classList.toggle('on',i===cur));
 
-    // 1. parallax
+    // 1. Enhanced parallax with smooth interpolation
     const p1=sp(0);
-    hLayers.forEach(l=>{const s=parseFloat(l.dataset.speed);l.style.transform='translateY('+(p1-0.5)*s*-120+'px)';});
+    hLayers.forEach(l=>{
+      const s=parseFloat(l.dataset.speed);
+      const ty=(p1-0.5)*s*-120;
+      const rx=(p1-0.5)*s*2;
+      l.style.transform='translateY('+ty+'px) rotateX('+rx+'deg)';
+    });
 
-    // 2. horizontal: map section progress (0..1) to track translateX
+    // 2. Enhanced horizontal with easing
     const p2=sp(1);
     const tw=track.scrollWidth, vw=innerWidth;
     const maxX=Math.max(0,tw-vw);
-    track.style.transform='translateX('+(-p2*maxX)+'px)';
+    const easedP2=easeInOutQuad(p2);
+    track.style.transform='translateX('+(-easedP2*maxX)+'px)';
     hbar.style.width=(p2*100)+'%';
+    // Panel visibility
+    hPanels.forEach((panel,i)=>{
+      const panelProgress=clamp((p2*3)-i*0.5,0,1);
+      panel.classList.toggle('visible',panelProgress>0.1);
+    });
 
-    // 3. trigger: scale/rotate ring + crossfade scenes
+    // 3. Enhanced scroll trigger with dramatic effects
     const p3=sp(2);
-    const sc=1+p3*0.35, rot=p3*18;
+    const sc=1+p3*0.5, rot=p3*25;
+    const easeP3=easeOutCubic(p3);
     timg.style.transform='scale('+sc+') rotate('+rot+'deg)';
-    tring.style.transform='scale('+(1+p3*0.6)+') rotate('+(-p3*30)+'deg)';
-    tring.style.opacity=clamp(0.6-p3*0.4,0,1);
+    timg.style.filter='brightness('+(1+p3*0.15)+')';
+    tring.style.transform='scale('+(1+p3*0.8)+') rotate('+(-p3*40)+'deg)';
+    tring.style.opacity=clamp(0.8-p3*0.6,0,1);
+    if(tring2){
+      tring2.style.transform='scale('+(1+p3*1.2)+') rotate('+(p3*20)+'deg)';
+      tring2.style.opacity=clamp(0.5-p3*0.4,0,1);
+    }
     const si=clamp(Math.floor(p3*3),0,2);
     sceneTxts.forEach((t,i)=>t.classList.toggle('on',i===si));
+    sceneDots.forEach((d,i)=>d.classList.toggle('on',i===si));
 
-    // 4. linked rotation: full 0..360 over section, reverse on up
+    // 4. Enhanced linked rotation with orbital elements
     const p4=sp(3);
     const deg=p4*360;
-    rotor.style.transform='rotate('+deg+'deg)';
-    rotor.querySelector('.core').style.transform='rotate('+(-deg)+'deg)'; // counter-spin image
-    rdot.style.transform='translate(-50%,-50%) rotate('+(deg)+'deg) translateX(54%)';
-    gdeg.textContent=Math.round(deg)+'°';
+    const easeDeg=easeInOutQuad(p4)*360;
+    rotor.style.transform='rotate('+easeDeg+'deg)';
+    rotor.querySelector('.core').style.transform='rotate('+(-easeDeg)+'deg) scale('+(1+Math.sin(p4*Math.PI)*0.05)+')';
+    rdot.style.transform='translate(-50%,-50%) rotate('+(easeDeg)+'deg) translateX(54%)';
+    if(rdot2){
+      rdot2.style.transform='translate(-50%,-50%) rotate('+(-easeDeg*0.7)+'deg) translateX(72%)';
+    }
+    if(progressRing){
+      progressRing.style.transform='rotate('+easeDeg+'deg)';
+    }
+    gdeg.textContent=Math.round(easeDeg)+'°';
 
-    // 5. 3D roam: push tunnel translateZ negative to fly through
+    // 5. Enhanced 3D roam with rotation and depth
     const p5=sp(4);
     const z=-p5*2200;
-    tunnel.style.transform='translateZ('+z+'px)';
+    const rotY=p5*15;
+    tunnel.style.transform='translateZ('+z+'px) rotateY('+rotY+'deg)';
     depth.textContent='DEPTH '+Math.round(p5*2200);
-    slabs.forEach((sl,i)=>{const slZ=i*600; sl.style.opacity=clamp(1-Math.abs((slZ+z)/500),0,1);});
+    slabs.forEach((sl,i)=>{
+      const slZ=i*600;
+      const dist=Math.abs((slZ+z)/500);
+      sl.style.opacity=clamp(1-dist,0,1);
+      sl.style.filter='blur('+clamp(dist*2,0,4)+'px) brightness('+(1-clamp(dist*0.1,0,0.3))+')';
+    });
   }
-  addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update);}},{passive:true});
+
+  // Smooth scroll handler with requestAnimationFrame
+  let scrollTimeout;
+  addEventListener('scroll',()=>{
+    if(!ticking){
+      ticking=true;
+      requestAnimationFrame(()=>{
+        update();
+        ticking=false;
+      });
+    }
+  },{passive:true});
   addEventListener('resize',update);
   update();
+
+  // ===== INTERSECTION OBSERVER for panel animations =====
+  if(!reduce){
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+        }
+      });
+    },{threshold:0.2});
+    hPanels.forEach(p=>observer.observe(p));
+  }
+
+  // ===== CREATE FLOATING PARTICLES for hero =====
+  if(!reduce){
+    const hero=$('.hero');
+    if(hero){
+      const particlesDiv=document.createElement('div');
+      particlesDiv.className='particles';
+      for(let i=0;i<20;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=Math.random()*100+'%';
+        p.style.animationDuration=(8+Math.random()*12)+'s';
+        p.style.animationDelay=Math.random()*10+'s';
+        p.style.width=p.style.height=(1+Math.random()*3)+'px';
+        particlesDiv.appendChild(p);
+      }
+      hero.appendChild(particlesDiv);
+    }
+
+    // Create ending particles
+    const end=$('.end');
+    if(end){
+      const endParticles=document.createElement('div');
+      endParticles.className='end-particles';
+      for(let i=0;i<15;i++){
+        const p=document.createElement('div');
+        p.className='end-particle';
+        p.style.left=Math.random()*100+'%';
+        p.style.animationDuration=(10+Math.random()*15)+'s';
+        p.style.animationDelay=Math.random()*10+'s';
+        endParticles.appendChild(p);
+      }
+      end.appendChild(endParticles);
+    }
+
+    // Create second aurora for hero
+    const heroBg=$('.hero .bg');
+    if(heroBg && !heroBg.querySelector('.aurora2')){
+      const a2=document.createElement('div');
+      a2.className='aurora2';
+      heroBg.appendChild(a2);
+    }
+
+    // Create second ring for trigger section
+    const tscene=$('#tscene');
+    if(tscene && !$('#tring2')){
+      const r2=document.createElement('div');
+      r2.className='ring ring2';
+      r2.id='tring2';
+      r2.style.cssText='inset:-18%';
+      tscene.appendChild(r2);
+    }
+
+    // Create scene dots
+    const scenesDiv=$('#scenes');
+    if(scenesDiv && !$('.scene-dots')){
+      const dotsDiv=document.createElement('div');
+      dotsDiv.className='scene-dots';
+      for(let i=0;i<3;i++){
+        const s=document.createElement('span');
+        if(i===0) s.className='on';
+        dotsDiv.appendChild(s);
+      }
+      scenesDiv.appendChild(dotsDiv);
+    }
+
+    // Create second orbit for rotor
+    const rotorEl=$('#rotor');
+    if(rotorEl && !rotorEl.querySelector('.orbit2')){
+      const o2=document.createElement('div');
+      o2.className='orbit orbit2';
+      rotorEl.appendChild(o2);
+    }
+    // Create second dot
+    if(rotorEl && !$('#rdot2')){
+      const d2=document.createElement('div');
+      d2.className='dot dot2';
+      d2.id='rdot2';
+      rotorEl.appendChild(d2);
+    }
+    // Create progress ring
+    if(rotorEl && !rotorEl.querySelector('.progress-ring')){
+      const pr=document.createElement('div');
+      pr.className='progress-ring';
+      rotorEl.appendChild(pr);
+    }
+
+    // Create fog and vignette for 3D roam
+    const rsec=$('.rsec .sticky');
+    if(rsec){
+      if(!rsec.querySelector('.fog')){
+        const fog=document.createElement('div');
+        fog.className='fog';
+        rsec.appendChild(fog);
+      }
+      if(!rsec.querySelector('.vignette')){
+        const vig=document.createElement('div');
+        vig.className='vignette';
+        rsec.appendChild(vig);
+      }
+    }
+  }
 })();
 </script>
 </body>
